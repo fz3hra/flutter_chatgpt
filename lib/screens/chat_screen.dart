@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chatgpt/models/chat_model.dart';
 import 'package:flutter_chatgpt/repositories/create_message_repository.dart';
 import 'package:flutter_chatgpt/repositories/get_message_repository.dart';
+import 'package:flutter_chatgpt/repositories/openai_repository.dart';
 import 'package:flutter_chatgpt/utils/token.dart';
 import 'package:flutter_chatgpt/widgets/appbar_widget/appbar_widget.dart';
 import 'package:gap/gap.dart';
@@ -19,16 +20,12 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   late stt.SpeechToText speech;
   late TextEditingController textController;
-  String text = "your question";
+  String? text;
   bool _isListening = false;
   bool doneListening = false;
   List<ChatModel> texts = [];
-  List<String> test = [];
   String newlyFormed = "";
   late ChatGPTApi api;
-  String? _parentMessageId;
-  String? _conversationId;
-  final List<ChatMessage> _messages = [];
 
   @override
   void initState() {
@@ -46,10 +43,12 @@ class _ChatScreenState extends State<ChatScreen> {
           if (val == "done") {
             CreateMessageRepository.createMessages(
               ChatModel(
-                  isChatGPT: _isListening,
-                  message: text,
-                  timestamp: Timestamp.now()),
+                isChatGPT: _isListening,
+                message: text!,
+                timestamp: Timestamp.now(),
+              ),
             );
+            OpenAiRepository.sendMessage(prompt: text);
           }
         },
         onError: (val) => print('on Errir $val'),
@@ -74,23 +73,6 @@ class _ChatScreenState extends State<ChatScreen> {
         speech.stop();
       });
     }
-    // !
-    // var newMessage = await api.sendMessage(
-    //   text,
-    //   conversationId: _conversationId,
-    //   parentMessageId: _parentMessageId,
-    // );
-
-    // setState(() {
-    //   _conversationId = newMessage.conversationId;
-    //   _parentMessageId = newMessage.messageId;
-    //   _messages.add(
-    //     ChatMessage(
-    //       text: newMessage.message,
-    //       chatMessageType: ChatMessageType.bot,
-    //     ),
-    //   );
-    // });
   }
 
   @override
@@ -167,7 +149,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   );
                 },
               ),
-              // ),
             ),
             const Gap(16),
             ElevatedButton(
