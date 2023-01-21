@@ -1,16 +1,7 @@
 # flutter_chatgpt
 
-A new Flutter project.
+This Flutter project was made so as to integrate chatGPT.
 
-## Getting Started
+## Video of how it is currently working:
+https://user-images.githubusercontent.com/74302462/213829047-ce37802d-a960-4b9a-ba93-b77d362bb5d2.mp4
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
